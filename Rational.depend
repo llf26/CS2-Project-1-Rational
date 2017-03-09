@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1489087159 source:c:\users\larry\documents\ua classes\cs2\rational\src\rational.cpp
+	"Rational.hpp"
+	<iostream>
+
+1489098135 c:\users\larry\documents\ua classes\cs2\rational\include\rational.hpp
+	<cstdlib>
+	<iosfwd>
+	<iostream>
+	<stdlib.h>
+
+1489098013 source:c:\users\larry\documents\ua classes\cs2\rational\main.cpp
+	<iostream>
+	"Rational.hpp"
+
