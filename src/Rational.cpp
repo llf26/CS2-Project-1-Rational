@@ -1,4 +1,4 @@
-// COPYRIGHT (C) 2017 Student Name (UANET ID ) All rights reserved.
+// COPYRIGHT (C) 2017 Larry Fritz (llf26) All rights reserved.
 //
 // rational.hpp: Definition of rational class and its interace.
 

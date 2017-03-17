@@ -1,6 +1,6 @@
-// COPYRIGHT (C) 2017 Student Name (UANET ID ) All rights reserved.
+// COPYRIGHT (C) 2017 Larry Fritz (llf26) All rights reserved.
 //
-// rational.hpp: Definition of rational class and its interace.
+// rational.hpp: Definition of rational class and its variables.
 
 #ifndef RATIONAL_HPP
 #define RATIONAL_HPP
@@ -12,7 +12,6 @@
 
 
 // Mathematical helper functions.
-//
 // NOTE: These are defined in rational.cpp.
 int gcd(int, int);
 int lcm(int, int);
@@ -39,6 +38,7 @@ class Rational
 
       Rational(int n, int d);
 
+      //Reduce fractions by dividing top and bottom by GCD
       void reduce()
         {
         int tmp =  gcd(numerator, denominator);
@@ -83,6 +83,19 @@ bool operator==(Rational& obj)
 
   }
 
+  bool operator==(int obj)
+  {
+      //Compare both the numerator and denominator of each side
+
+      Rational tmpObj1 = *this;
+      tmpObj1.reduce();
+      if(tmpObj1.numerator == obj)
+        return true;
+      else
+        return false;
+
+  }
+
   bool operator!=(Rational& obj)
   {
       //Compare both the numerator and denominator of each side
@@ -98,9 +111,22 @@ bool operator==(Rational& obj)
 
   }
 
-  bool operator<(Rational& obj)
+  bool operator!=(int obj)
   {
       //Compare both the numerator and denominator of each side
+
+      Rational tmpObj1 = *this;
+      tmpObj1.reduce();
+      if(tmpObj1.numerator != obj)
+        return true;
+      else
+        return false;
+
+  }
+
+  bool operator<(Rational& obj)
+  {
+      //Reduce, then compare both the numerator and denominator of each side
 
       Rational tmpObj1 = *this;
       Rational tmpObj2 = obj;
@@ -118,10 +144,24 @@ bool operator==(Rational& obj)
 
   }
 
+    bool operator<(int obj)
+  {
+      //Reduce, then compare both the numerator and denominator of each side
+
+      Rational tmpObj1 = *this;
+
+      tmpObj1.reduce();
+
+
+      if(tmpObj1.numerator < obj)
+        return true;
+      else return false;
+
+  }
+
     bool operator<=(Rational& obj)
   {
-      //Compare both the numerator and denominator of each side
-
+      //Reduce, then compare both the numerator and denominator of each side
       Rational tmpObj1 = *this;
       Rational tmpObj2 = obj;
       tmpObj1.reduce();
@@ -138,9 +178,26 @@ bool operator==(Rational& obj)
 
   }
 
+      bool operator<=(int obj)
+  {
+      //Reduce, then compare both the numerator and denominator of each side
+
+      Rational tmpObj1 = *this;
+
+      tmpObj1.reduce();
+
+
+      if(tmpObj1.numerator <= obj)
+        return true;
+      else return false;
+
+  }
+
+
+
     bool operator>(Rational& obj)
   {
-      //Compare both the numerator and denominator of each side
+      //Reduce, then compare both the numerator and denominator of each side
 
       Rational tmpObj1 = *this;
       Rational tmpObj2 = obj;
@@ -158,9 +215,24 @@ bool operator==(Rational& obj)
 
   }
 
+      bool operator>(int obj)
+  {
+      //Reduce, then compare both the numerator and denominator of each side
+
+      Rational tmpObj1 = *this;
+
+      tmpObj1.reduce();
+
+
+      if(tmpObj1.numerator > obj)
+        return true;
+      else return false;
+
+  }
+
       bool operator>=(Rational& obj)
   {
-      //Compare both the numerator and denominator of each side
+      //Reduce, then compare both the numerator and denominator of each side
 
       Rational tmpObj1 = *this;
       Rational tmpObj2 = obj;
@@ -178,12 +250,51 @@ bool operator==(Rational& obj)
 
   }
 
+      bool operator>=(int obj)
+  {
+      //Reduce, then compare both the numerator and denominator of each side
+
+      Rational tmpObj1 = *this;
+
+      tmpObj1.reduce();
+
+
+      if(tmpObj1.numerator >= obj)
+        return true;
+      else return false;
+
+  }
+
     Rational operator+(const Rational& obj)
   {
-     //Add real and imaginary parts of right hand side to left hand side
+
       Rational tmpObj1 = *this;
       Rational tmpObj2 = obj;
       Rational commonTemp(tmpObj1.numerator, tmpObj1.denominator);
+
+      //Get common denominator, then add
+      tmpObj1.numerator *= tmpObj2.denominator;
+      tmpObj1.denominator *= tmpObj2.denominator;
+      tmpObj2.numerator *= commonTemp.denominator;
+      tmpObj2.denominator *= commonTemp.denominator;
+
+      int resultNum = tmpObj1.numerator + tmpObj2.numerator;
+      int resultDen = tmpObj1.denominator;
+
+      Rational result(resultNum, resultDen);
+
+      result.reduce();
+      return result;
+  }
+
+      Rational operator+(int obj)
+  {
+
+      Rational tmpObj1 = *this;
+      Rational tmpObj2 (obj);
+      Rational commonTemp(tmpObj1.numerator, tmpObj1.denominator);
+
+      //Get common denominator, then add
       tmpObj1.numerator *= tmpObj2.denominator;
       tmpObj1.denominator *= tmpObj2.denominator;
       tmpObj2.numerator *= commonTemp.denominator;
@@ -200,7 +311,7 @@ bool operator==(Rational& obj)
 
       Rational operator-(const Rational& obj)
   {
-     //Add real and imaginary parts of right hand side to left hand side
+     //Get common denominator, then subtract
       Rational tmpObj1 = *this;
       Rational tmpObj2 = obj;
       Rational commonTemp(tmpObj1.numerator, tmpObj1.denominator);
@@ -218,9 +329,29 @@ bool operator==(Rational& obj)
       return result;
   }
 
+        Rational operator-(int obj)
+  {
+     //Get common denominator, then subtract
+      Rational tmpObj1 = *this;
+      Rational tmpObj2(obj);
+      Rational commonTemp(tmpObj1.numerator, tmpObj1.denominator);
+      tmpObj1.numerator *= tmpObj2.denominator;
+      tmpObj1.denominator *= tmpObj2.denominator;
+      tmpObj2.numerator *= commonTemp.denominator;
+      tmpObj2.denominator *= commonTemp.denominator;
+
+      int resultNum = tmpObj1.numerator - tmpObj2.numerator;
+      int resultDen = tmpObj1.denominator;
+
+      Rational result(resultNum, resultDen);
+
+      result.reduce();
+      return result;
+  }
+
   Rational operator*(const Rational&obj)
   {
-      //Implementation of the FOIL process for (a + bi)(a + bi)
+      //Multiply both numerator and denominator of each fraction
 
       Rational tmpObj = *this;
       int tempNum = tmpObj.numerator*obj.numerator;
@@ -230,13 +361,36 @@ bool operator==(Rational& obj)
       return result;
   }
 
+    Rational operator*(int obj)
+  {
+      //Multiply numerator by given integer
+
+      Rational tmpObj = *this;
+      int tempNum = tmpObj.numerator*obj;
+      Rational result(tempNum, tmpObj.denominator);
+      result.reduce();
+      return result;
+  }
+
     Rational operator/(const Rational&obj)
   {
-      //Implementation of the FOIL process for (a + bi)(a + bi)
+      //Multiply by reciprocal of right fraction
 
       Rational tmpObj = *this;
       int tempNum = tmpObj.numerator*obj.denominator;
       int tempDem = tmpObj.denominator*obj.numerator;
+      Rational result(tempNum, tempDem);
+      result.reduce();
+      return result;
+  }
+
+      Rational operator/(int obj)
+  {
+      //Multiply left denominator by given integer
+
+      Rational tmpObj = *this;
+      int tempNum = tmpObj.numerator;
+      int tempDem = tmpObj.denominator*obj;
       Rational result(tempNum, tempDem);
       result.reduce();
       return result;
